@@ -1,5 +1,6 @@
 package com.github.youssfbr.bookstore.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -19,6 +20,11 @@ public class Book implements Serializable {
 
     @Column(nullable = false)
     private String title;
+
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)//remover junto com FetchType.Lazy
+    @ManyToOne//(fetch = FetchType.LAZY)(cascade = CascadeType.MERGE)(fetch = FetchType.LAZY) persist  Quando salvamos a entidade person , a entidade address também será salva.
+    @JoinColumn(name = "publisher_id" , nullable=false)
+    private Publisher publisher;
 
     public Book() { }
 
@@ -41,6 +47,14 @@ public class Book implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     @Override

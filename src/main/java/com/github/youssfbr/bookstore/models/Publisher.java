@@ -1,10 +1,13 @@
 package com.github.youssfbr.bookstore.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +22,10 @@ public class Publisher implements Serializable {
 
     @Column(nullable = false)
     private String name;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "publisher" , fetch = FetchType.LAZY)//cascade = CascadeType.ALL)
+    private Set<Book> books = new HashSet<>();
 
     public Publisher() { }
 
@@ -41,6 +48,14 @@ public class Publisher implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override
